@@ -11,26 +11,6 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3' # Ganti dengan versi PHP yang sesuai
-        extensions: openssl, zip, fileinfo, pgsql, pdo_pgsql # Tambahkan ekstensi yang dibutuhkan
-
-    - name: Install Composer
-      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-
-    - name: Cache Configuration
-      run: |
-        php artisan config:cache
-        php artisan route:cache
-        php artisan view:cache
-
-    - name: chmod storage and bootstrap/cache
-      run: |
-        sudo chmod -R 775 storage
-        sudo chmod -R 775 bootstrap/cache
-
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
@@ -52,6 +32,6 @@ jobs:
         password: ${{ secrets.sshpassword }}
         port: ${{ secrets.sshport }}
         script: |
-          ls -l gocroot
+          composer install --no-dev --optimize-autoloader
           curl https://icanhazip.com/
           curl -X POST --basic --user "${{ secrets.apikey }}:" https://api.alwaysdata.com/v1/site/${{ secrets.appid }}/restart/
