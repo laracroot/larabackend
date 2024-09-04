@@ -13,7 +13,7 @@ class CategoryController extends Controller
     {
         return Category::all();
     } */
-   
+
     //fungsi untuk paginasi
 /*     public function index(Request $request)
     {
@@ -81,11 +81,25 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+/*     public function store(Request $request)
     {
         $post = Category::create($request->all());
         return response()->json($post, 201);
+    } */
+
+    //update PUT dengan validasi
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'is_publish' => 'required|boolean',
+        ]);
+
+        $category = Category::create($validatedData);
+
+        return response()->json($category, 201);
     }
+
 
     /**
      * Display the specified resource.
