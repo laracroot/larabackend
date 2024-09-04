@@ -13,8 +13,9 @@ class CategoryController extends Controller
     {
         return Category::all();
     } */
-
-    public function index(Request $request)
+   
+    //fungsi untuk paginasi
+/*     public function index(Request $request)
     {
         // Tentukan jumlah item per halaman (misalnya 10)
         $perPage = 10;
@@ -31,6 +32,41 @@ class CategoryController extends Controller
             'total' => $categories->total(), // Total item
             'prev_page_url' => $categories->previousPageUrl(), // URL halaman sebelumnya
             'next_page_url' => $categories->nextPageUrl(), // URL halaman berikutnya
+        ]);
+    } */
+
+    //fungsi paginasi dengan kondisi search
+    public function index(Request $request)
+    {
+        $perPage = 10;
+
+        // Ambil nilai pencarian dari query string
+        $search = $request->input('search');
+
+        // Query dasar untuk mendapatkan kategori
+        $query = Category::query();
+
+        // Jika ada nilai pencarian, tambahkan kondisi ke query
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('id', 'like', '%' . $search . '%')
+                ->orWhere('is_publish', 'like', '%' . $search . '%')
+                ->orWhere('created_at', 'like', '%' . $search . '%')
+                ->orWhere('updated_at', 'like', '%' . $search . '%');
+        }
+
+        // Dapatkan hasil query dengan pagination
+        $categories = $query->paginate($perPage);
+
+        // Kembalikan data ke frontend dalam format JSON
+        return response()->json([
+            'data' => $categories->items(),
+            'current_page' => $categories->currentPage(),
+            'last_page' => $categories->lastPage(),
+            'per_page' => $categories->perPage(),
+            'total' => $categories->total(),
+            'prev_page_url' => $categories->previousPageUrl(),
+            'next_page_url' => $categories->nextPageUrl(),
         ]);
     }
 
