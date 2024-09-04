@@ -120,12 +120,27 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+/*     public function update(Request $request, string $id)
     {
         $post = Category::findOrFail($id);
         $post->update($request->all());
         return response()->json($post, 200);
+    } */
+
+    //tambah validasi inputan
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'is_publish' => 'required|boolean',
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->update($validatedData);
+
+        return response()->json($category, 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
