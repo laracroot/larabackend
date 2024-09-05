@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User; // Impor model User
 use Illuminate\Http\Request;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class UserController extends Controller
 {
