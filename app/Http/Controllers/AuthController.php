@@ -36,7 +36,7 @@ class AuthController extends Controller
                     ->setKey($privateKey)
                     ->setIssuer('your-app-name')
                     ->setAudience('your-app-users')
-                    ->setSubject($user->id) // Masukkan ID pengguna sebagai subjek token
+                    ->setSubject($user->id) // Masukkan ID pengguna sebagai subjek token, jika ingin email tinggal ganti ke  $user->email;
                     ->setExpiration(new \DateTimeImmutable('+18 hour'))
                     ->toString();
 
