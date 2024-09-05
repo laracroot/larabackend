@@ -5,14 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User; // Impor model User
 use Illuminate\Http\Request;
 
-//import Http request
-use App\Http\Resources\PostResource;
-
-//import facade Validator
 use Illuminate\Support\Facades\Validator;
-
-//import facade Storage
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -32,11 +25,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
 
         // Buat pengguna baru
         $user = User::create([
@@ -64,11 +60,14 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         // Validasi input
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'sometimes|required|string|min:8',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
 
         // Cari pengguna berdasarkan ID
         $user = User::findOrFail($id);

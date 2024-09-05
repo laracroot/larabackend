@@ -13,14 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         apiPrefix: '/api',//prefix untuk api
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //disable csrf pada api
-        $middleware->validateCsrfTokens(except: [
-            'api/users', // <-- exclude this route
-            'api/*',
-            'api/users/*',
-            'users/*',
-            'users',
-        ]);
+        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
