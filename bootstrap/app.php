@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //disable csrf pada api
         $middleware->validateCsrfTokens(except: [
-            'api/*' // <-- exclude this route
+            'https://bukupedia.alwaysdata.net/api/users' // <-- exclude this route
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
