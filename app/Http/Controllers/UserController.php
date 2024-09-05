@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User; // Pastikan Anda mengimpor model User di sini
 use Illuminate\Http\Request;
 
 class UserController extends Controller
