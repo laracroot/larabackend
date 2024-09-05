@@ -38,6 +38,9 @@ class CategoryController extends Controller
     //fungsi paginasi dengan kondisi search
     public function index(Request $request)
     {
+        // Ambil user ID dari atribut request
+        $userId = $request->get('userId');
+
         $perPage = 10;
 
         // Ambil nilai pencarian dari query string
@@ -60,6 +63,7 @@ class CategoryController extends Controller
 
         // Kembalikan data ke frontend dalam format JSON
         return response()->json([
+            'userid'=>$userId,
             'data' => $categories->items(),
             'current_page' => $categories->currentPage(),
             'last_page' => $categories->lastPage(),
