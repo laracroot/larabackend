@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User; // Pastikan Anda mengimpor model User di sini
+
+use App\Models\User; // Impor model User
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,28 +15,6 @@ class UserController extends Controller
         // Mendapatkan semua pengguna
         $users = User::all();
         return response()->json($users, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // Validasi input
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-
-        // Buat pengguna baru
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-        ]);
-
-        return response()->json($user, 201);
     }
 
     /**
@@ -71,14 +50,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
@@ -92,6 +63,13 @@ class UserController extends Controller
 
         // Cari pengguna berdasarkan ID
         $user = User::findOrFail($id);
+
+        // Jika password tidak diberikan, jangan mengubahnya
+        if (isset($validatedData['password'])) {
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
+        }
 
         // Update data pengguna
         $user->update($validatedData);
