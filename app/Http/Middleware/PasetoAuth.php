@@ -14,6 +14,7 @@ use ParagonIE\Paseto\ProtocolCollection;
 
 use Symfony\Component\HttpFoundation\Response;
 
+
 class PasetoAuth
 {
     /**
