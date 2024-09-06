@@ -12,7 +12,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::apiResource('users', UserController::class);
-Route::apiResource('categories', CategoryController::class)->middleware(PasetoAuth::class);
-
+Route::apiResource('categories', CategoryController::class);
+//ini yg pake token
+//Route::apiResource('categories', CategoryController::class)->middleware(PasetoAuth::class);
 
 
